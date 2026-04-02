@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkOrderApp.Data;
 
@@ -11,9 +12,11 @@ using WorkOrderApp.Data;
 namespace WorkOrderApp.Migrations
 {
     [DbContext(typeof(WorkOrderAppContext))]
-    partial class WorkOrderAppContextModelSnapshot : ModelSnapshot
+    [Migration("20260402191408_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,7 +117,7 @@ namespace WorkOrderApp.Migrations
                         {
                             Id = 1,
                             AssignedToId = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 4, 2, 19, 14, 7, 764, DateTimeKind.Utc).AddTicks(8347),
                             Description = "Light fixture in hallway is flickering.",
                             Status = "Open",
                             Title = "Fix broken light"
@@ -123,7 +126,7 @@ namespace WorkOrderApp.Migrations
                         {
                             Id = 2,
                             AssignedToId = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 4, 2, 19, 14, 7, 764, DateTimeKind.Utc).AddTicks(9427),
                             Description = "Maintenance room door hinge is loose.",
                             Status = "Open",
                             Title = "Replace door hinge"
@@ -131,7 +134,7 @@ namespace WorkOrderApp.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 4, 2, 19, 14, 7, 764, DateTimeKind.Utc).AddTicks(9430),
                             Description = "The air vents in the conference room are dirty and need cleaning.",
                             Status = "Open",
                             Title = "Clean Air Vents"

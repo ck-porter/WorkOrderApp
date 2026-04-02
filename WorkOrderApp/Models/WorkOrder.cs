@@ -9,7 +9,7 @@ namespace WorkOrderApp.Models
         public string Title { get; set; } = null!;
         [Required]
         public string Description { get; set; } = null!;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
         [Required]
         public string Status { get; set; } = "Open"; // Default status is Open
         public int? AssignedToId { get; set; }

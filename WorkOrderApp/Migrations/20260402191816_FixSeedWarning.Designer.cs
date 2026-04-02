@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkOrderApp.Data;
 
@@ -11,9 +12,11 @@ using WorkOrderApp.Data;
 namespace WorkOrderApp.Migrations
 {
     [DbContext(typeof(WorkOrderAppContext))]
-    partial class WorkOrderAppContextModelSnapshot : ModelSnapshot
+    [Migration("20260402191816_FixSeedWarning")]
+    partial class FixSeedWarning
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,6 +98,9 @@ namespace WorkOrderApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -105,7 +111,7 @@ namespace WorkOrderApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedToId");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("WorkOrders");
 
@@ -114,7 +120,7 @@ namespace WorkOrderApp.Migrations
                         {
                             Id = 1,
                             AssignedToId = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 4, 2, 19, 18, 15, 910, DateTimeKind.Utc).AddTicks(3489),
                             Description = "Light fixture in hallway is flickering.",
                             Status = "Open",
                             Title = "Fix broken light"
@@ -123,7 +129,7 @@ namespace WorkOrderApp.Migrations
                         {
                             Id = 2,
                             AssignedToId = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 4, 2, 19, 18, 15, 910, DateTimeKind.Utc).AddTicks(4643),
                             Description = "Maintenance room door hinge is loose.",
                             Status = "Open",
                             Title = "Replace door hinge"
@@ -131,7 +137,7 @@ namespace WorkOrderApp.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 4, 2, 19, 18, 15, 910, DateTimeKind.Utc).AddTicks(4645),
                             Description = "The air vents in the conference room are dirty and need cleaning.",
                             Status = "Open",
                             Title = "Clean Air Vents"
@@ -140,11 +146,9 @@ namespace WorkOrderApp.Migrations
 
             modelBuilder.Entity("WorkOrderApp.Models.WorkOrder", b =>
                 {
-                    b.HasOne("WorkOrderApp.Models.Employee", "AssignedTo")
+                    b.HasOne("WorkOrderApp.Models.Employee", null)
                         .WithMany("WorkOrders")
-                        .HasForeignKey("AssignedToId");
-
-                    b.Navigation("AssignedTo");
+                        .HasForeignKey("EmployeeId");
                 });
 
             modelBuilder.Entity("WorkOrderApp.Models.Employee", b =>
