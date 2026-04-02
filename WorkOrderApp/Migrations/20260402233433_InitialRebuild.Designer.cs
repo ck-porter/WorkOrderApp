@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkOrderApp.Data;
 
@@ -11,9 +12,11 @@ using WorkOrderApp.Data;
 namespace WorkOrderApp.Migrations
 {
     [DbContext(typeof(WorkOrderAppContext))]
-    partial class WorkOrderAppContextModelSnapshot : ModelSnapshot
+    [Migration("20260402233433_InitialRebuild")]
+    partial class InitialRebuild
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

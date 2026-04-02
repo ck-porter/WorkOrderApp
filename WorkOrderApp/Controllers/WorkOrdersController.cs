@@ -48,7 +48,7 @@ namespace WorkOrderApp.Controllers
         // GET: WorkOrders/Create
         public IActionResult Create()
         {
-            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Email");
+            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name");
             return View();
         }
 
@@ -61,11 +61,12 @@ namespace WorkOrderApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                workOrder.CreatedAt = DateTime.Now; // Set creation time
                 _context.Add(workOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Email", workOrder.AssignedToId);
+            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
             return View(workOrder);
         }
 
@@ -82,7 +83,7 @@ namespace WorkOrderApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Email", workOrder.AssignedToId);
+            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
             return View(workOrder);
         }
 
@@ -91,7 +92,7 @@ namespace WorkOrderApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedAt,Status,AssignedToId")] WorkOrder workOrder)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedAt,Status,Priority,Location,AssignedToId")] WorkOrder workOrder)
         {
             if (id != workOrder.Id)
             {
@@ -118,7 +119,7 @@ namespace WorkOrderApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Email", workOrder.AssignedToId);
+            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
             return View(workOrder);
         }
 
