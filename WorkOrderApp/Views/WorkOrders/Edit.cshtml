@@ -33,12 +33,12 @@
                 <input asp-for="Status" class="form-control" />
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @* <div class="form-group">
                 <label asp-for="AssignedToId" class="control-label">Assigned To</label>
                 <select asp-for="AssignedToId" class="form-control" asp-items="ViewBag.AssignedToId">
                     <option value="">-- Unassigned --</option>
                 </select>
-            </div> 
+            </div>  *@
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

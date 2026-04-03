@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace WorkOrderApp.Models
@@ -13,11 +14,11 @@ namespace WorkOrderApp.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
         public WorkOrderStatus Status { get; set; } = WorkOrderStatus.Open;
+        public string? AssignedToUserId { get; set; } = null; 
+        public IdentityUser? AssignedToUser { get; set; } 
         public PriorityLevel Priority { get; set; } = PriorityLevel.Medium;
         public string? Location { get; set; } = null;
 
-        public int? AssignedToId { get; set; }
-        public Employee? AssignedTo { get; set; }
         public ICollection<WorkOrderLog> History { get; set; } = new List<WorkOrderLog>();
     }
 

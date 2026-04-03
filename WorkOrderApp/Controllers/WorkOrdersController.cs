@@ -22,7 +22,8 @@ namespace WorkOrderApp.Controllers
         // GET: WorkOrders
         public async Task<IActionResult> Index()
         {
-            var workOrderAppContext = _context.WorkOrders.Include(w => w.AssignedTo);
+            var workOrderAppContext = _context.WorkOrders;
+                //.Include(w => w.AssignedTo);
             return View(await workOrderAppContext.ToListAsync());
         }
 
@@ -35,7 +36,7 @@ namespace WorkOrderApp.Controllers
             }
 
             var workOrder = await _context.WorkOrders
-                .Include(w => w.AssignedTo)
+                //.Include(w => w.AssignedTo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (workOrder == null)
             {
@@ -81,7 +82,7 @@ namespace WorkOrderApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
+            //ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
             return View(workOrder);
         }
 
@@ -117,7 +118,7 @@ namespace WorkOrderApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
+            //ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
             return View(workOrder);
         }
 
@@ -130,7 +131,7 @@ namespace WorkOrderApp.Controllers
             }
 
             var workOrder = await _context.WorkOrders
-                .Include(w => w.AssignedTo)
+                //.Include(w => w.AssignedTo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (workOrder == null)
             {
