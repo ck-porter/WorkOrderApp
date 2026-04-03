@@ -12,8 +12,8 @@ using WorkOrderApp.Data;
 namespace WorkOrderApp.Migrations
 {
     [DbContext(typeof(WorkOrderAppContext))]
-    [Migration("20260403152710_Initial")]
-    partial class Initial
+    [Migration("20260403190704_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -278,11 +278,10 @@ namespace WorkOrderApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AssignedToUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PerformedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PerformedByUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -295,7 +294,7 @@ namespace WorkOrderApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedToUserId");
+                    b.HasIndex("PerformedByUserId");
 
                     b.HasIndex("WorkOrderId");
 
@@ -366,12 +365,12 @@ namespace WorkOrderApp.Migrations
 
             modelBuilder.Entity("WorkOrderApp.Models.WorkOrderLog", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "AssignedToUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "PerformedByUser")
                         .WithMany()
-                        .HasForeignKey("AssignedToUserId");
+                        .HasForeignKey("PerformedByUserId");
 
                     b.HasOne("WorkOrderApp.Models.WorkOrder", null)
-                        .WithMany("History")
+                        .WithMany("Logs")
                         .HasForeignKey("WorkOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -380,14 +379,14 @@ namespace WorkOrderApp.Migrations
                         .WithMany()
                         .HasForeignKey("WorkOrderId1");
 
-                    b.Navigation("AssignedToUser");
+                    b.Navigation("PerformedByUser");
 
                     b.Navigation("WorkOrder");
                 });
 
             modelBuilder.Entity("WorkOrderApp.Models.WorkOrder", b =>
                 {
-                    b.Navigation("History");
+                    b.Navigation("Logs");
                 });
 #pragma warning restore 612, 618
         }

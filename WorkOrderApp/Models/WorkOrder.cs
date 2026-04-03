@@ -19,7 +19,7 @@ namespace WorkOrderApp.Models
         public PriorityLevel Priority { get; set; } = PriorityLevel.Medium;
         public string? Location { get; set; } = null;
 
-        public ICollection<WorkOrderLog> History { get; set; } = new List<WorkOrderLog>();
+        public ICollection<WorkOrderLog> Logs { get; set; } = new List<WorkOrderLog>();
     }
 
     public enum WorkOrderStatus

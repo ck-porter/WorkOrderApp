@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WorkOrderApp.Data;
 using WorkOrderApp.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace WorkOrderApp.Controllers
 {
@@ -45,9 +45,6 @@ namespace WorkOrderApp.Controllers
 
             return View(await _context.WorkOrders.ToListAsync());
 
-
-            //var workOrderAppContext = _context.WorkOrders;
-            //return View(await workOrderAppContext.ToListAsync());
         }
 
         // GET: WorkOrders/Details/5
@@ -59,7 +56,8 @@ namespace WorkOrderApp.Controllers
             }
 
             var workOrder = await _context.WorkOrders
-                //.Include(w => w.AssignedTo)
+                .Include(w => w.Logs)
+                .ThenInclude(l => l.PerformedByUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (workOrder == null)
             {
@@ -83,18 +81,20 @@ namespace WorkOrderApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                workOrder.CreatedAt = DateTime.Now; // Set creation time
+                workOrder.CreatedAt = DateTime.UtcNow; // Set creation time
                 _context.Add(workOrder);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
+
+                // get the current user ID
+                var userId = _userManager.GetUserId(User) ?? "System";
+
 
                 //log creation
                 _context.WorkOrderLogs.Add(new WorkOrderLog
                 {
                     WorkOrderId = workOrder.Id,
                     Action = "Created",
-                    Timestamp = DateTime.Now,
-                    PerformedBy = User.Identity?.Name ?? "System"
+                    PerformedByUserId = userId
 
                 });
 
@@ -106,8 +106,7 @@ namespace WorkOrderApp.Controllers
                         WorkOrderId = workOrder.Id,
                         Action = "Assigned",
                         AssignedToUserId = workOrder.AssignedToUserId,
-                        Timestamp = DateTime.Now,
-                        PerformedBy = User.Identity?.Name ?? "System"
+                        PerformedByUserId = userId
                     });
                 }
 
@@ -156,6 +155,9 @@ namespace WorkOrderApp.Controllers
                     _context.Update(workOrder);
                     await _context.SaveChangesAsync();
 
+                    // get user id
+                    var userId = _userManager.GetUserId(User) ?? "System";
+
                     //check for assignment changes
                     if (existing.AssignedToUserId != workOrder.AssignedToUserId)
                     {
@@ -164,8 +166,7 @@ namespace WorkOrderApp.Controllers
                             WorkOrderId = workOrder.Id,
                             Action = "Reassigned",
                             AssignedToUserId = workOrder.AssignedToUserId,
-                            Timestamp = DateTime.Now,
-                            PerformedBy = User.Identity?.Name ?? "System"
+                            PerformedByUserId = userId
                         });
                         await _context.SaveChangesAsync();
                     }
@@ -196,8 +197,7 @@ namespace WorkOrderApp.Controllers
             }
 
             var workOrder = await _context.WorkOrders
-                //.Include(w => w.AssignedTo)
-                .FirstOrDefaultAsync(m => m.Id == id);
+           .FirstOrDefaultAsync(m => m.Id == id);
             if (workOrder == null)
             {
                 return NotFound();

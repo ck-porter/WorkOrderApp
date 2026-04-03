@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WorkOrderApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -190,15 +190,15 @@ namespace WorkOrderApp.Migrations
                     WorkOrderId1 = table.Column<int>(type: "int", nullable: true),
                     Action = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PerformedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssignedToUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    PerformedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AssignedToUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkOrderLogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkOrderLogs_AspNetUsers_AssignedToUserId",
-                        column: x => x.AssignedToUserId,
+                        name: "FK_WorkOrderLogs_AspNetUsers_PerformedByUserId",
+                        column: x => x.PerformedByUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -254,9 +254,9 @@ namespace WorkOrderApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkOrderLogs_AssignedToUserId",
+                name: "IX_WorkOrderLogs_PerformedByUserId",
                 table: "WorkOrderLogs",
-                column: "AssignedToUserId");
+                column: "PerformedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkOrderLogs_WorkOrderId",

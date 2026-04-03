@@ -23,7 +23,7 @@ namespace WorkOrderApp.Data
 
             modelBuilder.Entity<WorkOrderLog>()
                 .HasOne<WorkOrder>()
-                .WithMany(w => w.History)
+                .WithMany(w => w.Logs)
                 .HasForeignKey(wl => wl.WorkOrderId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

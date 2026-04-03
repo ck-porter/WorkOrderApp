@@ -9,8 +9,9 @@ namespace WorkOrderApp.Models
         public WorkOrder? WorkOrder { get; set; } // Navigation property to the related work order
         public string Action { get; set; } = null!; 
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-        public string PerformedBy { get; set; } = null!; 
+        public string? PerformedByUserId { get; set; }
+
         public string? AssignedToUserId { get; set; } // Optional, only for assignment actions
-        public IdentityUser? AssignedToUser { get; set; } // Navigation property for assigned user
+        public IdentityUser? PerformedByUser { get; set; } // Navigation property for assigned user
     }
 }
