@@ -42,6 +42,13 @@
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="AssignedToUserId">Assigned Technician</label>
+                <select asp-for="AssignedToUserId" class="form-control" asp-items="ViewBag.Technicians">
+                    <option value="">-- Unassigned --</option>
+                </select>
+            </div>
+
             <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

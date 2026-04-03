@@ -1,30 +1,53 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using WorkOrderApp.Data;
 using WorkOrderApp.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WorkOrderApp.Controllers
 {
     public class WorkOrdersController : Controller
     {
         private readonly WorkOrderAppContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public WorkOrdersController(WorkOrderAppContext context)
+        public WorkOrdersController(WorkOrderAppContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+        }
+
+        //add helper for user drop down
+        private async Task PopulateDropdownAsync(string? selectedUserId = null)
+        {
+            var tech = await _userManager.GetUsersInRoleAsync("Technician");
+
+            ViewBag.Technicians = new SelectList(tech, "Id", "Email", selectedUserId);
         }
 
         // GET: WorkOrders
         public async Task<IActionResult> Index()
         {
-            var workOrderAppContext = _context.WorkOrders;
-                //.Include(w => w.AssignedTo);
-            return View(await workOrderAppContext.ToListAsync());
+            //load user
+            var user = await _userManager.GetUserAsync(User);
+
+            if(User.IsInRole("Technician"))
+            {
+                var techWorkOrders = _context.WorkOrders.Where(w => w.AssignedToUserId == user.Id);
+                return View(await techWorkOrders.ToListAsync());
+            }
+
+            return View(await _context.WorkOrders.ToListAsync());
+
+
+            //var workOrderAppContext = _context.WorkOrders;
+            //return View(await workOrderAppContext.ToListAsync());
         }
 
         // GET: WorkOrders/Details/5
@@ -47,14 +70,13 @@ namespace WorkOrderApp.Controllers
         }
 
         // GET: WorkOrders/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await PopulateDropdownAsync();
             return View();
         }
 
         // POST: WorkOrders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(WorkOrder workOrder)
@@ -64,8 +86,36 @@ namespace WorkOrderApp.Controllers
                 workOrder.CreatedAt = DateTime.Now; // Set creation time
                 _context.Add(workOrder);
                 await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
+
+                //log creation
+                _context.WorkOrderLogs.Add(new WorkOrderLog
+                {
+                    WorkOrderId = workOrder.Id,
+                    Action = "Created",
+                    Timestamp = DateTime.Now,
+                    PerformedBy = User.Identity?.Name ?? "System"
+
+                });
+
+                //log assignment if assigned
+                if (!string.IsNullOrEmpty(workOrder.AssignedToUserId))
+                {
+                    _context.WorkOrderLogs.Add(new WorkOrderLog
+                    {
+                        WorkOrderId = workOrder.Id,
+                        Action = "Assigned",
+                        AssignedToUserId = workOrder.AssignedToUserId,
+                        Timestamp = DateTime.Now,
+                        PerformedBy = User.Identity?.Name ?? "System"
+                    });
+                }
+
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            await PopulateDropdownAsync(workOrder.AssignedToUserId);
             return View(workOrder);
         }
 
@@ -82,21 +132,22 @@ namespace WorkOrderApp.Controllers
             {
                 return NotFound();
             }
-            //ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
+    
+            await PopulateDropdownAsync(workOrder.AssignedToUserId);
             return View(workOrder);
         }
 
         // POST: WorkOrders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedAt,Status,Priority,Location,AssignedToId")] WorkOrder workOrder)
+        public async Task<IActionResult> Edit(int id, WorkOrder workOrder)
         {
             if (id != workOrder.Id)
             {
                 return NotFound();
             }
+
+            var existing = await _context.WorkOrders.AsNoTracking().FirstOrDefaultAsync(w => w.Id == id);
 
             if (ModelState.IsValid)
             {
@@ -104,6 +155,20 @@ namespace WorkOrderApp.Controllers
                 {
                     _context.Update(workOrder);
                     await _context.SaveChangesAsync();
+
+                    //check for assignment changes
+                    if (existing.AssignedToUserId != workOrder.AssignedToUserId)
+                    {
+                        _context.WorkOrderLogs.Add(new WorkOrderLog
+                        {
+                            WorkOrderId = workOrder.Id,
+                            Action = "Reassigned",
+                            AssignedToUserId = workOrder.AssignedToUserId,
+                            Timestamp = DateTime.Now,
+                            PerformedBy = User.Identity?.Name ?? "System"
+                        });
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +183,7 @@ namespace WorkOrderApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["AssignedToId"] = new SelectList(_context.Employees, "Id", "Name", workOrder.AssignedToId);
+            await PopulateDropdownAsync(workOrder.AssignedToUserId);
             return View(workOrder);
         }
 
