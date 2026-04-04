@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WorkOrderApp.Data;
 using Microsoft.AspNetCore.Identity;
+using WorkOrderApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<WorkOrderAppContext>();
 
+builder.Services.AddHttpClient<WeatherService>();
 
 var app = builder.Build();
 

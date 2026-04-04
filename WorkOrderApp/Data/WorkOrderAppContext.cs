@@ -22,8 +22,8 @@ namespace WorkOrderApp.Data
             base.OnModelCreating(modelBuilder);                      
 
             modelBuilder.Entity<WorkOrderLog>()
-                .HasOne<WorkOrder>()
-                .WithMany(w => w.Logs)
+                .HasOne(wl => wl.WorkOrder)   // navigation property
+                .WithMany(w => w.Logs)        // collection property
                 .HasForeignKey(wl => wl.WorkOrderId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

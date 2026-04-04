@@ -1,21 +1,30 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WorkOrderApp.Models;
+using WorkOrderApp.Services;
 
 namespace WorkOrderApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly WeatherService _weatherService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, WeatherService weatherService)
         {
             _logger = logger;
+            _weatherService = weatherService; 
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            //add coordinates for weather 
+            double lat = 45.06;
+            double lon = -64.46;
+
+            var weather = await _weatherService.GetWeatherAsync(lat, lon);
+            return View(weather);
         }
 
         public IActionResult Privacy()
