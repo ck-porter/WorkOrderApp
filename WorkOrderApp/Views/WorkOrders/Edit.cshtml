@@ -1,52 +1,56 @@
 @model WorkOrderApp.Models.WorkOrder
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Work Order";
 }
 
-<h1>Edit</h1>
-
-<h4>WorkOrder</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container">
+    <h2 class="fw-bold mb-4" style="color: var(--avc-green);">Edit Work Order</h2>
+    <div class="card shadow-sm p-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Title</label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Description</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Created At</label>
                 <input asp-for="CreatedAt" class="form-control" />
                 <span asp-validation-for="CreatedAt" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+            <div class="mb-3">
+                <label class="form-label fw-bold">Status</label>
+                <select asp-for="Status" asp-items="ViewBag.Status" class="form-control"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AssignedToUserId">Assigned Technician</label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Priority</label>
+                <select asp-for="Priority" asp-items="ViewBag.Priority" class="form-control"></select>
+                <span asp-validation-for="Priority" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Assigned To</label>
                 <select asp-for="AssignedToUserId" class="form-control" asp-items="ViewBag.Technicians">
                     <option value="">-- Unassigned --</option>
                 </select>
             </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary px-4">Save</button>
                 <a asp-action="Index" class="btn btn-outline-secondary px-4">Back</a>
             </div>
+
         </form>
     </div>
 </div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

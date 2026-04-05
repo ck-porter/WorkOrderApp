@@ -23,8 +23,10 @@ namespace WorkOrderApp.Controllers
         private async Task PopulateDropdownAsync(string? selectedUserId = null)
         {
             var tech = await _userManager.GetUsersInRoleAsync("Technician");
+            var stat = new List<string> { "Open", "Assigned", "InProgress", "Completed", "Archived" };
 
             ViewBag.Technicians = new SelectList(tech, "Id", "Email", selectedUserId);
+            ViewBag.Status = new SelectList(stat);
         }
 
         // GET: WorkOrders
