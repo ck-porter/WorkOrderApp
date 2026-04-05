@@ -4,60 +4,54 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>WorkOrder</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container">
+    <h2 class="fw-bold mb-4" style="color: var(--avc-green);">Create Work Order</h2>
+    <div class="card shadow-sm p-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Title</label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Description</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Created At</label>
                 <input asp-for="CreatedAt" class="form-control" />
                 <span asp-validation-for="CreatedAt" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Status</label>
                 <select asp-for="Status" asp-items="Html.GetEnumSelectList<WorkOrderApp.Models.WorkOrderStatus>()" class="form-control"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Priority" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Priority</label>
                 <select asp-for="Priority" asp-items="Html.GetEnumSelectList<WorkOrderApp.Models.PriorityLevel>()" class="form-control"></select>
                 <span asp-validation-for="Priority" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Location</label>
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AssignedToUserId">Assigned Technician</label>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Assigned To: </label>
                 <select asp-for="AssignedToUserId" class="form-control" asp-items="ViewBag.Technicians">
                     <option value="">-- Unassigned --</option>
                 </select>
             </div>
 
-            <div class="form-group mt-3">
+            <div class="form-group mt-4">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a href="/WorkOrders" class="btn btn-outline-secondary">Back</a>
             </div>
         </form>
     </div>
-</div>
-
-<div class="mt-2">
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

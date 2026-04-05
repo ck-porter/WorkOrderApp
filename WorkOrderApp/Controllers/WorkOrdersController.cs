@@ -2,10 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WorkOrderApp.Data;
 using WorkOrderApp.Models;
 
@@ -36,26 +32,29 @@ namespace WorkOrderApp.Controllers
         {
             //load user
             var user = await _userManager.GetUserAsync(User);
+            IQueryable<WorkOrder> query = _context.WorkOrders.Include(w => w.AssignedToUser);
 
-            if(User.IsInRole("Technician"))
+            if (User.IsInRole("Technician"))
             {
                 var techWorkOrders = _context.WorkOrders.Where(w => w.AssignedToUserId == user.Id);
                 return View(await techWorkOrders.ToListAsync());
             }
 
-            return View(await _context.WorkOrders.ToListAsync());
+            return View(await query.ToListAsync());
 
         }
 
         // GET: WorkOrders/Details/5
         public async Task<IActionResult> Details(int? id)
-        {
+        {      
+
             if (id == null)
             {
                 return NotFound();
             }
 
             var workOrder = await _context.WorkOrders
+                 .Include(w => w.AssignedToUser)
                 .Include(w => w.Logs)
                 .ThenInclude(l => l.PerformedByUser)
                 .FirstOrDefaultAsync(m => m.Id == id);

@@ -4,30 +4,45 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero section-->
+<div class="bg-light py-5 mb-4 border-bottom">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Welcome to Apple Valley County</h1>
+        <p class="lead text-muted">
+            This is a simple municipality demo showcasing work orders, user rolls and a live weather data.
+        </p>
+    </div>
 </div>
 
-@if (Model != null)
-{
-    <div class="card mt-4 p-3" style="max-width: 400px; margin: 0 auto;">
-        <h4 class="mb-3">Current Weather</h4>
-        <div class="d-flex align-items-center justify-content-center">
-            @if (Model?.Weather?.Length > 0)
+<!--Main content-->
+<div class=" container">
+    <div class="row-justify-content-center">
+        <div class="col-med-6">
+            @if (Model != null)
             {
-                <img src="@($"https://openweathermap.org/img/wn/{Model.Weather[0].Icon}@2x.png")" alt="Weather icon" />
+                <div class="col-md-6">
+                    <div class="card-body text-center">
+                        <h4 class="mb-3">Current Weather</h4>
+                        <div class="d-flex align-items-center justify-content-center">
+                            @if (Model?.Weather?.Length > 0)
+                            {
+                                <img src="@($"https://openweathermap.org/img/wn/{Model.Weather[0].Icon}@2x.png")" alt="Weather icon" />
+                            }
+                            <div class="ms-3 text-start">
+                                <h5 class="mb-1">@Model.Main.Temp°C</h5>
+                                <p class="text-muted mb-0">@Model.Weather[0].Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
-            <div class="ms-3 text-start">
-                <h5 class="mb-1">@Model.Main.Temp°C</h5>
-                <p class="text-muted mb-0">@Model.Weather[0].Description</p>
-            </div>
+            else
+            {
+                <div class="alert alert-warning mt-4">
+                    Weather data unavailable.
+                </div>
+            }
         </div>
+
     </div>
-}
-else
-{
-    <div class="alert alert-warning mt-4">
-        Weather data unavailable.
-    </div>
-}
+</div>

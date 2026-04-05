@@ -1,47 +1,51 @@
 @model WorkOrderApp.Models.WorkOrder
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Work Order Details";
 }
 
-<h1>Work Order Details</h1>
-<div class="card mb-4">
-    <div class="card-body">
-        <h4>@Model.Title</h4>
-        <p>@Model.Description</p>
-        <p><strong>Status: </strong>@Model.Status</p>
-        <p><strong>Priority: </strong>@Model.Priority</p>
-        <p><strong>Assigned To: </strong>@Model.AssignedToUserId</p>
-        <p><strong>Created At: </strong>@Model.CreatedAt</p>
+<div class="container">
+    <h2 class="fw-bold mb-4" style="color: var(--avc-green);">Work Order Details</h2>
+    <div class="card shadow-sm p-4 mb-4">
+        <h4 class="fw-bold">@Model.Title</h4>
+        <p class="text-muted">@Model.Description</p>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <strong>Status:</strong>
+                <span class="badge bg-info text-dark">@Model.Status</span>
+            </div>
+            <div class="col-md-4">
+                <strong>Priority:</strong>
+                <span class="badge bg-danger">@Model.Priority</span>
+            </div>
+            <div class="col-md-4">
+                <strong>Assigned To:</strong>
+                @Model.AssignedToUser?.Email
+            </div>
+        </div>
     </div>
-</div>
-<h4>Activity Log</h4>
-@if (Model.Logs == null || !Model.Logs.Any())
-{
-    <p>No activity logs available.</p>
-}
-else
-{
-   <ul class="list-group">
-        @foreach (var log in Model.Logs.OrderByDescending(l => l.Timestamp))
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h5 class="fw-bold mb-3">Activity Log</h5>
+        @if (Model.Logs?.Any() == true)
         {
-            <li class="list-group-item">
-                <strong>@log.Timestamp:</strong> @log.Action
-                @if (!string.IsNullOrEmpty(log.AssignedToUserId))
+            <ul class="list-group">
+                @foreach (var log in Model.Logs.OrderByDescending(l => l.Timestamp))
                 {
-                    <span> ->@log.AssignedToUserId</span>
+                    <li class="list-group-item">
+                        <strong>@log.Action</strong>
+                        by @log.PerformedByUser?.Email
+                        <span class="text-muted float-end">@log.Timestamp</span>
+                    </li>
                 }
-                <div class="text-muted">
-                    by @log.PerformedByUser?.Email
-                </div>
-            </li>
-        }      
-
-   </ul>
-}
-)
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">No activity recorded.</p>
+        }
+    </div>
+    <div class="d-flex gap-3">
+        <a asp-action="Index" class="btn btn-outline-secondary px-4">Back</a>
+    </div>
 </div>

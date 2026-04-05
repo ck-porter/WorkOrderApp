@@ -3,17 +3,65 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WorkOrderApp</title>
+    <title>@ViewData["Title"] - AppleValley</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WorkOrderApp.styles.css" asp-append-version="true" />
+
+    <style>
+        /*-- Theme style --*/
+        :root {
+            --avc-green: #2F4F4F;
+            --avc-sage: #8FAE8F;
+            --avc-beige: #F7F5EF;
+            --avc-gold: #C9A227;
+            --avc-white: #FFFFFF;
+        }
+        
+        body#main-body {
+            background-color: var(--avc-beige);
+        }
+        .navbar {
+            background-color: var(--avc-green);
+        }
+        .navbar-brand,
+        .nav-link,
+        .navbar-nav .nav-item,
+        .navbar-text a {
+            color: var(--avc-white);
+        }
+        .nav-link:hover {
+            color: var(--avc-gold);
+        }
+        .container {
+            margin-bottom: 2rem;
+        }
+
+        footer {
+            margin-top: 1rem;
+            padding: 1rem 0;
+            background-color: var(--avc-green);
+        }
+        footer .container,
+        footer .container a {
+           color: var(--avc-white);
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+
+    </style>
 </head>
-<body>
+<body id="main-body" class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WorkOrderApp</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AppleValley</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,15 +69,15 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="WorkOrders" asp-action="Index">Work Orders</a>
+                                <a class="nav-link" asp-area="" asp-controller="WorkOrders" asp-action="Index">Work Orders</a>
                             </li>
                         }
                     </ul>
@@ -38,13 +86,13 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container flex-grow-1">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted mt-auto">
         <div class="container">
             &copy; 2026 - WorkOrderApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
