@@ -44,18 +44,18 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-primary" href="/WorkOrders/Details/@item.Id">Details</a>
-                                <a class="btn btn-sm btn-outline-secondary" href="/WorkOrders/Edit/@item.Id">Edit</a>
-                                <a class="btn btn-sm btn-outline-danger" href="/WorkOrders/Delete/@item.Id">Delete</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+
                             </td>
                         }else {
                         <td class="text-end">
-                            <a class="btn btn-sm btn-outline-primary" href="/WorkOrders/Details/@item.Id">Details</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
                         </td>
                         }                  
                     </tr>
                   }
-
             </tbody>
         </table>
     </div>

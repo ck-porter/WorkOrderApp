@@ -12,7 +12,6 @@ namespace WorkOrderApp.Data
         public WorkOrderAppContext(DbContextOptions<WorkOrderAppContext> options) : base(options) { }
 
         //instances
-
         public DbSet<Models.WorkOrder> WorkOrders { get; set; }
         public DbSet<Models.WorkOrderLog> WorkOrderLogs { get; set; }   
 

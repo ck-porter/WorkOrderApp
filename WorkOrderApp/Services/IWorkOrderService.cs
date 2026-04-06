@@ -8,7 +8,6 @@ namespace WorkOrderApp.Services
         Task<List<WorkOrder>> GetForTechnicianAsync(string technicianId);
         Task<WorkOrder?> GetByIdAsync(int Id);
         Task<WorkOrder> CreateAsync(WorkOrder workOrder, string userId);
-
         Task UpdateAsync(WorkOrder workOrder, string userId);
         Task DeleteAsync(int id);
 
