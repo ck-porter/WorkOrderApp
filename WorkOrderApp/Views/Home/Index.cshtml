@@ -15,18 +15,18 @@
 </div>
 
 <!--Main content-->
-<div class=" container">
+<div class=" container bg-light p-5">
     <div class="row-justify-content-center">
         <div class="col-med-6">
             @if (Model != null)
             {
-                <div class="col-md-6">
+                <div>
                     <div class="card-body text-center">
                         <h4 class="mb-3">Current Weather</h4>
                         <div class="d-flex align-items-center justify-content-center">
                             @if (Model?.Weather?.Length > 0)
                             {
-                                <img src="@($"https://openweathermap.org/img/wn/{Model.Weather[0].Icon}@2x.png")" alt="Weather icon" />
+                                <img src="@($"https://openweathermap.org/img/wn/{Model.Weather[0].Icon}@2x.png")" alt="Weather icon" style="filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));" />
                             }
                             <div class="ms-3 text-start">
                                 <h5 class="mb-1">@Model.Main.Temp°C</h5>

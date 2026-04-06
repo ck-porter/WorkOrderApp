@@ -11,7 +11,6 @@ namespace WorkOrderApp.Controllers
 {
     public class WorkOrdersController : Controller
     {
-        //private readonly WorkOrderAppContext _context;
         private readonly IWorkOrderService _service;
         private readonly UserManager<IdentityUser> _userManager;
 

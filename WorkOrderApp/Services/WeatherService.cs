@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WorkOrderApp.Services
 {
@@ -52,18 +53,25 @@ namespace WorkOrderApp.Services
 
     public class WeatherResult
     {
+        [JsonPropertyName("main")]
         public MainInfo Main { get; set; }
+
+        [JsonPropertyName("weather")]
         public WeatherInfo[] Weather { get; set; }
     }
 
     public class MainInfo
     {
+        [JsonPropertyName("temp")]
         public double Temp { get; set; }
     }
 
     public class WeatherInfo
     {
+        [JsonPropertyName("description")]
         public string Description { get; set; }
+
+        [JsonPropertyName("icon")]
         public string Icon { get; set; }
     }
 }
