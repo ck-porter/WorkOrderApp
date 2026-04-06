@@ -16,6 +16,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddHttpClient<WeatherService>();
 
+builder.Services.AddScoped<IWorkOrderService, WorkOrderService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

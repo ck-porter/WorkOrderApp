@@ -7,7 +7,10 @@
 <div class="container">
     <div class="fw-bold justify-content-between align-items-center mb-4">
         <h2 class="fw-bold" stlye="color: var(--avc-green);">Work Orders</h2>
-        <a class="btn btn-success" href="/WorkOrders/Create">New Work Order</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-success" href="/WorkOrders/Create">New Work Order</a>
+        }
     </div>
     <div class="card shadow-sm">
         <table class="table table-hover align-middle">
@@ -45,6 +48,10 @@
                                 <a class="btn btn-sm btn-outline-secondary" href="/WorkOrders/Edit/@item.Id">Edit</a>
                                 <a class="btn btn-sm btn-outline-danger" href="/WorkOrders/Delete/@item.Id">Delete</a>
                             </td>
+                        }else {
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" href="/WorkOrders/Details/@item.Id">Details</a>
+                        </td>
                         }                  
                     </tr>
                   }

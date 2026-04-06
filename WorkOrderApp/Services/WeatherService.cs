@@ -9,10 +9,11 @@ namespace WorkOrderApp.Services
         private readonly IMemoryCache _cache;
         private readonly string _apiKey = "YOUR_API_KEY_HERE";
 
-        public WeatherService(HttpClient httpClient, IMemoryCache cache)
+        public WeatherService(HttpClient httpClient, IMemoryCache cache, IConfiguration config)
         {
             _httpClient = httpClient;
             _cache = cache;
+            _apiKey = config["OpenWeather:ApiKey"]!;
         }
 
         public async Task<WeatherResult?> GetWeatherAsync(double lat, double lon)
@@ -24,8 +25,12 @@ namespace WorkOrderApp.Services
                 return cachedResult;
             }
 
-            // if not, call the API
-            var url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=e3ea55d5c82a1e0427c29a64f094990c&units=metric"; //default public id for testing
+            if (string.IsNullOrWhiteSpace(_apiKey))
+            {
+                throw new InvalidOperationException("OpenWeather API Key is not configured.");
+            }
+
+            var url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}&units=metric"; //moved default string to appsettings
             var response = await _httpClient.GetAsync(url);
 
 
@@ -34,10 +39,14 @@ namespace WorkOrderApp.Services
 
             var json = await response.Content.ReadAsStringAsync();
 
-            System.Diagnostics.Debug.WriteLine("==== WEATHER JSON ====");
-            System.Diagnostics.Debug.WriteLine(json);
+            var result =  JsonSerializer.Deserialize<WeatherResult>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            
+            _cache.Set(cacheKey, result, TimeSpan.FromMinutes(30));
 
-            return JsonSerializer.Deserialize<WeatherResult>(json, new JsonSerializerOptions{PropertyNameCaseInsensitive = true});    //ignore case        
+            return result;
         }
     }
 
