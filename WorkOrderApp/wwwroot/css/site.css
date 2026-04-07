@@ -29,3 +29,59 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+@media (max-width: 768px) {
+
+    table thead {
+        display: none;
+    }
+
+    table tbody tr {
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        margin-bottom: .75rem;
+        padding: .75rem;
+        border-radius: 6px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: .25rem 0;
+        border: none;
+        font-size: .9rem;
+        line-height: 1.2;
+        word-break: break-word;
+    }
+
+        table tbody td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: #444;
+            margin-right: .5rem;
+            flex-shrink: 0;
+        }
+
+    .badge {
+        font-size: .75rem;
+        padding: .35em .5em;
+    }
+
+    td[data-label="Actions"] {
+        margin-top: .5rem;
+        justify-content: flex-start;
+        gap: .4rem;
+        flex-wrap: wrap;
+    }
+
+        td[data-label="Actions"]::before {
+            display: none;
+        }
+
+        td[data-label="Actions"] .btn {
+            padding: .25rem .5rem;
+            font-size: .75rem;
+        }
+}

@@ -3,60 +3,58 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<div class="container">
-    <div class="fw-bold justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold" stlye="color: var(--avc-green);">Work Orders</h2>
-        @if (User.IsInRole("Admin"))
-        {
-            <a class="btn btn-success" href="/WorkOrders/Create">New Work Order</a>
-        }
-    </div>
-    <div class="card shadow-sm">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
+                                  
+<div class="fw-bold justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold" stlye="color: var(--avc-green);">Work Orders</h2>
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-success" href="/WorkOrders/Create">New Work Order</a>
+    }
+</div>
+<div class="card shadow-sm">
+<table class="table table-hover align-middle" style="table-layout:fixed">
+        <thead class="table-light">
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Assigned To</th>
+                <th></th>
+            </tr>   
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th>Priority</th>
-                    <th>Assigned To</th>
-                    <th></th>
-                </tr>   
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Title</td>
-                        <td>
-                            <span class="badge
-                                        @(item.Status.ToString() == "Open" ? "bg-warning text-dark" :
-                                          item.Status.ToString() == "In Progress" ? "bg-info text-dark" : "bg-success")">@item.Status</span>
-                         </td>
-
-                        <td>
-                            <span class="badge
-                                        @(item.Priority.ToString() == "High" ? "bg-danger" :
-                                        item.Priority.ToString() == "Medium" ? "bg-primary" : "bg-secondary")">@item.Priority</span>
+                    <td data-label="Title">@item.Title</td>
+                    <td data-label="Status">
+                        <span class="badge
+                                    @(item.Status.ToString() == "Open" ? "bg-warning text-dark" :
+                                        item.Status.ToString() == "In Progress" ? "bg-info text-dark" : "bg-success")">@item.Status</span>
                         </td>
 
-                        <td>@item.AssignedToUser?.Email</td>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                    <td data-label="Priority">
+                        <span class="badge
+                                    @(item.Priority.ToString() == "High" ? "bg-danger" :
+                                    item.Priority.ToString() == "Medium" ? "bg-primary" : "bg-secondary")">@item.Priority</span>
+                    </td>
 
-                            </td>
-                        }else {
-                        <td class="text-end">
+                    <td data-label="AssignedTo">@item.AssignedToUser?.Email</td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td data-label="Actions" class="text-end">
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+
                         </td>
-                        }                  
-                    </tr>
-                  }
-            </tbody>
-        </table>
-    </div>
+                    }else {
+                    <td data-label="Actions" class="text-end">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                    </td>
+                    }                  
+                </tr>
+                }
+        </tbody>
+    </table>
 </div>
