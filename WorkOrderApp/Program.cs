@@ -49,6 +49,40 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    var db = services.GetRequiredService<WorkOrderAppContext>();
+
+    // db warm up loop
+    var maxAttempts = 10;
+    var delay = TimeSpan.FromSeconds(3);
+    var dbReady = false;
+
+    for (int attempt = 1; attempt <= maxAttempts; attempt++)
+    {
+        try
+        {
+            logger.LogInformation($"Checking database availability (attempt {attempt}/{maxAttempts})...");
+            await db.Database.ExecuteSqlRawAsync("SELECT 1");
+            dbReady = true;
+            logger.LogInformation("Database is ready.");
+            break;
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning($"Database not ready yet: {ex.Message}");
+            await Task.Delay(delay);
+        }
+    }
+
+    // if not warmed up, show messsage
+    if (!dbReady)
+    {
+        logger.LogError("Database did not become ready in time. Showing fallback page.");
+
+        app.MapGet("/", () => Results.Redirect("/DatabaseUnavailable"));
+        return;
+    }
+
     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
