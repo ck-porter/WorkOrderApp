@@ -16,8 +16,8 @@
 
 <!--Main content-->
 <div class=" container bg-light p-5">
-    <div class="row-justify-content-center">
-        <div class="col-med-6">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
             @if (Model != null)
             {
                 <div>
@@ -43,6 +43,57 @@
                 </div>
             }
         </div>
-
     </div>
+
+    <!-- Demo Access Section -->
+    <div class="container my-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-4">
+                <h3 class="fw-bold mb-3">Want to Test User Roles?</h3>
+                <p class="text-muted mb-4">
+                    If your organization would like to explore the full demo, including admin, staff, and public user roles, 
+                    you can request temporary credentials directly from the administrator.
+                </p>
+                <a href="mailto:charity.porter@mmail.com" class="btn btn-primary btn-lg px-4">
+                    Request Demo Credentials
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Overview -->
+    <div class="container my-5">
+        <h2 class="text-center fw-bold mb-4">What This Demo Showcases</h2>
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="p-4 bg-light border rounded h-100 text-center">
+                    <h5 class="fw-bold mb-2">Work Order System</h5>
+                    <p class="text-muted">
+                        Submit, track, and manage municipal work orders with role‑based permissions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="p-4 bg-light border rounded h-100 text-center">
+                    <h5 class="fw-bold mb-2">User Role Management</h5>
+                    <p class="text-muted">
+                        Explore how staff, administrators, and residents interact with the system.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="p-4 bg-light border rounded h-100 text-center">
+                    <h5 class="fw-bold mb-2">Live Weather Integration</h5>
+                    <p class="text-muted">
+                        Real‑time weather data pulled from OpenWeather for municipal dashboards.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
